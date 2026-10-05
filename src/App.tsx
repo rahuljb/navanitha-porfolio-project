@@ -13,6 +13,9 @@ import { AdPhotoshoot } from './pages/AdPhotoshoot';
 import { Photography } from './pages/Photography';
 import { ProjectDetails } from './pages/ProjectDetails';
 import { Contact } from './pages/Contact';
+import { VideoShowcase } from './pages/VideoShowcase';
+import { SocialMediaShowcase } from './pages/SocialMediaShowcase';
+import { DirectionShowcase } from './pages/DirectionShowcase';
 
 export default function App() {
   return (
@@ -29,9 +32,23 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/work" element={<Work />} />
             <Route path="/work/production" element={<Production />} />
+            <Route path="/work/films-production" element={<Production />} />
+            <Route path="/films-production" element={<Production />} />
             <Route path="/work/film-interview" element={<FilmInterview />} />
             <Route path="/work/ad-photoshoot" element={<AdPhotoshoot />} />
             <Route path="/work/photography" element={<Photography />} />
+            <Route path="/photography" element={<Photography />} />
+            <Route path="/work/celebrity-interview" element={<VideoShowcase />} />
+            <Route path="/celebrity-interview" element={<VideoShowcase />} />
+            <Route path="/work/social-media" element={<SocialMediaShowcase />} />
+            <Route path="/social-media" element={<SocialMediaShowcase />} />
+            <Route path="/work/commercial-content" element={<SocialMediaShowcase />} />
+            <Route path="/work/direction" element={<DirectionShowcase />} />
+            <Route path="/direction" element={<DirectionShowcase />} />
+            <Route path="/work/directing" element={<DirectionShowcase />} />
+            <Route path="/work/digital-media" element={<SocialMediaShowcase />} />
+            <Route path="/video/digital-media" element={<VideoShowcase />} />
+            <Route path="/video/:id" element={<VideoShowcase />} />
             <Route path="/project/:id" element={<ProjectDetails />} />
             <Route path="/contact" element={<Contact />} />
             {/* Fallback route */}

@@ -6,7 +6,7 @@ import { Journey } from '../components/Journey';
 import { WorkSection } from '../components/WorkSection';
 import { ProductionSection } from '../components/ProductionSection';
 import { CreativeStatement } from '../components/CreativeStatement';
-import { CategoryList } from '../components/CategoryList';
+// import { CategoryList } from '../components/CategoryList';
 import { ContactSection } from '../components/ContactSection';
 
 export const Home: React.FC = () => {
@@ -34,7 +34,6 @@ export const Home: React.FC = () => {
       <CreativeStatement />
 
       {/* 8. WHAT I DO / WORK CATEGORIES (06 — WHAT I DO, 01-06 with hover reveals) */}
-      <CategoryList />
 
       {/* 9. CONTACT (07 — LET'S CREATE SOMETHING MEANINGFUL, Gmail, WhatsApp, LinkedIn, Instagram & simple form) */}
       <ContactSection />

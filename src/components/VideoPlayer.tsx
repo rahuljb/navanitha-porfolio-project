@@ -1,23 +1,49 @@
+
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
 import { ProductionVideo } from '../data/videos';
+import { getEmbedVideoUrl } from '../utils/videoUtils';
 
 interface VideoPlayerProps {
-  video: ProductionVideo;
+  video?: ProductionVideo | null;
+  className?: string;
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ video }) => {
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  video,
+  className = '',
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  // No video = don't render anything
+  if (!video || hasError) {
+    return null;
+  }
+
+  // Resolve YouTube / other supported video URLs
+  const embedSource = getEmbedVideoUrl(
+    video.embedUrl || video.streamUrl || video.youtubeUrl,
+    video.youtubeId
+  );
+
+  // No valid video URL = don't render anything
+  if (!embedSource) {
+    return null;
+  }
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden bg-[#111111] border border-[#222222] shadow-2xl">
+    <div
+      className={`relative aspect-video w-full overflow-hidden bg-[#0A0A0A] border border-[#222222] shadow-2xl rounded-lg ${className}`}
+    >
       {isPlaying ? (
         <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          src={embedSource}
+          title={video.title || 'Video player'}
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
           allowFullScreen
           className="w-full h-full border-0"
+          onError={() => setHasError(true)}
         />
       ) : (
         <div
@@ -31,33 +57,40 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ video }) => {
               setIsPlaying(true);
             }
           }}
-          aria-label={`Play ${video.title}`}
+          aria-label={`Play ${video.title || 'video'}`}
         >
-          {/* YouTube Thumbnail Background */}
-          <img
-            src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
-            alt={video.title}
-            onError={(e) => {
-              // Fallback to high quality Unsplash thumbnail if maxresdefault is missing
-              (e.target as HTMLImageElement).src = video.thumbnail;
-            }}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-          />
+          {/* Thumbnail */}
+          {video.thumbnail && (
+            <img
+              src={video.thumbnail}
+              alt={video.title || 'Video preview'}
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          )}
 
-          {/* Cinematic Scrim */}
+          {/* Cinematic overlay */}
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/25 transition-colors duration-300" />
 
-          {/* Center Play Affordance */}
+          {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#F4F1EB] text-[#111111] flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110">
-              <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1 text-[#111111]" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#C96B5A] text-white flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110">
+              <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1 text-white" />
             </div>
           </div>
 
-          {/* Bottom Video Meta Bar */}
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-[#DDDBD6] bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-sm">
-            <span>{video.number} · {video.category.toUpperCase()}</span>
-            <span className="text-[#C96B5A]">CLICK TO PLAY</span>
+          {/* Video information */}
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-[#DDDBD6] bg-black/75 backdrop-blur-sm px-3.5 py-2 rounded-sm border border-white/10">
+            <span>
+              {video.number || '01'} ·{' '}
+              {(video.category || 'VIDEO').toUpperCase()}
+            </span>
+
+            <span className="text-[#C96B5A] font-medium">
+              CLICK TO PLAY
+            </span>
           </div>
         </div>
       )}

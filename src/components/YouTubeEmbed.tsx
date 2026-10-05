@@ -11,6 +11,9 @@ export const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({
   title = 'YouTube video player',
   className = ''
 }) => {
+  if (!videoId || typeof videoId !== 'string' || videoId.trim() === '') {
+    return null;
+  }
   return (
     <div className={`relative aspect-video w-full overflow-hidden bg-[#111111] rounded-sm ${className}`}>
       <iframe

@@ -3,7 +3,7 @@ import { creatorProfile } from '../data/projects';
 
 export const IntroSection: React.FC = () => {
   return (
-    <section className="relative w-full py-28 sm:py-44 px-6 sm:px-10 lg:px-12 bg-[#0A0A0A] border-b border-[#1A1A1A]">
+    <section id="intro" className="relative w-full py-28 sm:py-44 px-6 sm:px-10 lg:px-12 bg-[#0A0A0A] border-b border-[#1A1A1A]">
       <div className="max-w-6xl mx-auto space-y-12 sm:space-y-16">
         
         {/* Small Editorial Label */}
@@ -21,9 +21,9 @@ export const IntroSection: React.FC = () => {
         </h2>
 
         {/* Calm Intro Paragraph with Generous Whitespace */}
-        <div className="max-w-2xl pt-4">
-          <p className="text-xl sm:text-2xl md:text-3xl font-serif text-[#8A8A8A] font-light leading-relaxed">
-            "{creatorProfile.bioShort}"
+        <div className="max-w-3xl pt-4">
+          <p className="text-xl sm:text-2xl md:text-3xl font-serif text-[#DDDBD6] font-light leading-relaxed">
+            {creatorProfile.bioShort}
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import { Journey } from '../components/Journey';
 import { CreativeStatement } from '../components/CreativeStatement';
 import { ContactSection } from '../components/ContactSection';
 import { creatorProfile } from '../data/projects';
-import { getProfileImageUrl } from '../assets/profileImage';
+import { getProfileImageUrl, navanithaStudioPortrait } from '../assets/profileImage';
 
 export const About: React.FC = () => {
   const profileImg = getProfileImageUrl();
@@ -20,6 +20,19 @@ export const About: React.FC = () => {
                 src={profileImg}
                 alt={creatorProfile.name}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (!target.dataset.triedImagesJpeg) {
+                    target.dataset.triedImagesJpeg = 'true';
+                    target.src = '/images/profile-photo.jpeg';
+                  } else if (!target.dataset.triedRootJpg) {
+                    target.dataset.triedRootJpg = 'true';
+                    target.src = '/profile.jpg';
+                  } else if (!target.dataset.triedRootJpeg) {
+                    target.dataset.triedRootJpeg = 'true';
+                    target.src = '/profile.jpeg';
+                  }
+                }}
               />
             </div>
           </div>

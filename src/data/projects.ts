@@ -18,10 +18,8 @@ export interface Project {
 
 export const photographyCategories = [
   'All',
-  'Street',
-  'Portrait',
-  'Lifestyle',
-  'Personal Work'
+  'Portraits',
+  'Visual Diary'
 ];
 
 export const creatorProfile = {
@@ -29,7 +27,7 @@ export const creatorProfile = {
   roleTitle: 'FILMMAKER. DIRECTOR. CREATOR.',
   tagline: 'Visual Storyteller',
   heroSubtitle: 'Turning ideas, emotions and everyday moments into meaningful visual stories.',
-  bioShort: 'I am Navanitha Vijayakumar, a visual media enthusiast driven by a passion for storytelling and creative exploration.',
+  bioShort: 'I’m Navanitha Vijayakumar — a visual storyteller drawn to the art of film, emotion, and human experiences. I create with a simple belief: every frame has a story worth telling.',
   bioParagraphs: [
     'I am Navanitha Vijayakumar, a visual media enthusiast driven by a passion for storytelling and creative exploration.',
     'My journey across filmmaking, television, and digital media has allowed me to explore directing, production, and content creation.',
@@ -37,46 +35,39 @@ export const creatorProfile = {
     'I thrive in collaborative creative spaces, constantly learning and evolving, with a vision to create work that not only captures attention but leaves a lasting impression.'
   ],
   journeySteps: [
-    'FILMMAKING',
-    'TELEVISION',
-    'DIGITAL MEDIA',
-    'DIRECTING',
-    'PRODUCTION',
+    'FILMS & PRODUCTION',
+    'CELEBRITY INTERVIEW',
+    'SOCIAL MEDIA & COMMERCIAL CONTENT',
+    'PHOTOGRAPHY',
     'CONTENT CREATION'
   ],
   services: [
     {
       number: '01',
-      title: 'FILMMAKING',
-      description: 'Narrative storytelling, character-driven fiction, cinematic short films, and visual pacing.',
+      title: 'FILMS & PRODUCTION',
+      description: 'End-to-end cinematic storytelling, narrative short films, physical set direction, crew coordination, and high-standard finishing.',
       image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80'
     },
     {
       number: '02',
-      title: 'TELEVISION',
-      description: 'Multi-camera episodic drama, structured broadcast choreography, and actor direction.',
-      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      number: '03',
-      title: 'DIGITAL MEDIA',
-      description: 'High-retention creative formats, new-age video narratives, and cross-platform visual identity.',
+      title: 'CELEBRITY INTERVIEW',
+      description: 'Intimate, cinematic long-form conversations exploring artistic discipline, acting craft, and personal reflections with industry figures.',
       image: 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=1200&q=80'
     },
     {
+      number: '03',
+      title: 'SOCIAL MEDIA & COMMERCIAL CONTENT',
+      description: 'High-impact commercial spots, dynamic brand campaigns, episodic web series, and viral short-form reels.',
+      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80'
+    },
+    {
       number: '04',
-      title: 'DIRECTION',
-      description: 'Directorial vision, emotional subtext, visual treatment development, and on-set leadership.',
-      image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80'
+      title: 'PHOTOGRAPHY',
+      description: 'Intimate human portraits, expressive character stills, and observational visual diaries captured with natural light.',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80'
     },
     {
       number: '05',
-      title: 'PRODUCTION',
-      description: 'End-to-end creative planning, crew coordination, technical execution, and finishing.',
-      image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      number: '06',
       title: 'CONTENT CREATION',
       description: 'Compelling micro-stories, branded editorial pieces, and evocative human moments.',
       image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80'

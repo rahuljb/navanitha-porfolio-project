@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
-import { YouTubeEmbed } from './YouTubeEmbed';
+import { getEmbedVideoUrl } from '../utils/videoUtils';
 
 interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
   youtubeId?: string;
+  embedUrl?: string;
+  streamUrl?: string;
   title: string;
   description?: string;
   category?: string;
@@ -16,11 +18,15 @@ export const VideoModal: React.FC<VideoModalProps> = ({
   isOpen,
   onClose,
   youtubeId,
+  embedUrl,
+  streamUrl,
   title,
   description,
   category,
   year
 }) => {
+  const [hasError, setHasError] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -31,7 +37,10 @@ export const VideoModal: React.FC<VideoModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen || !youtubeId) return null;
+  const embedSource = getEmbedVideoUrl(youtubeId ? undefined : (embedUrl || streamUrl),youtubeId);
+
+  // If not open or if video URL is not available, hide cleanly without breaking
+  if (!isOpen || !embedSource || hasError) return null;
 
   return (
     <div
@@ -64,9 +73,16 @@ export const VideoModal: React.FC<VideoModalProps> = ({
           </button>
         </div>
 
-        {/* Responsive YouTube Embed */}
-        <div className="w-full bg-black">
-          <YouTubeEmbed videoId={youtubeId} title={title} />
+        {/* Video Frame */}
+        <div className="w-full bg-black aspect-video">
+          <iframe
+            src={embedSource}
+            title={title}
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowFullScreen
+            onError={() => setHasError(true)}
+            className="w-full h-full border-0"
+          />
         </div>
 
         {/* Description */}

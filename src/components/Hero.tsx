@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowRight, ArrowDown } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { ArrowRight, ArrowDown, Camera } from 'lucide-react';
 import { creatorProfile } from '../data/projects';
 import { navanithaStudioPortrait, getProfileImageUrl } from '../assets/profileImage';
 
@@ -8,7 +8,8 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
-  const profileImg = getProfileImageUrl();
+  const [profileImg, setProfileImg] = useState<string>(getProfileImageUrl());
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleScrollToWork = () => {
     if (onExploreClick) {
@@ -21,8 +22,45 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
     }
   };
 
+  const handleScrollToNext = () => {
+    const nextElem = document.getElementById('intro');
+    if (nextElem) {
+      nextElem.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    }
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        if (result) {
+          setProfileImg(result);
+          try {
+            localStorage.setItem('navanitha_custom_profile_image', result);
+          } catch (err) {
+            console.error('Storage full or unavailable', err);
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <section className="relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#0A0A0A] text-[#F4F1EB]">
+      {/* Hidden file uploader */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handlePhotoUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
       {/* 1. Cinematic Fullscreen Background with Desaturation & Film Grain */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
@@ -39,7 +77,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
       {/* 2. Main Hero Content: Off-center Editorial Card Layout */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full pt-32 sm:pt-40 md:pt-44 flex-1 flex flex-col justify-center">
         
-        {/* Asymmetrical / Off-Center Content Positioning (weighted toward center-left / center-right) */}
+        {/* Asymmetrical / Off-Center Content Positioning */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Big Editorial Typographic Lead */}
@@ -68,11 +106,11 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
             </div>
           </div>
 
-          {/* Off-Center Editorial Profile Card (Warm Ivory #F4F1EB with portrait, thin black lines, coral accent) */}
+          {/* Off-Center Editorial Profile Card */}
           <div className="lg:col-span-6 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md bg-[#F4F1EB] text-[#111111] p-7 sm:p-9 shadow-2xl rounded-sm border border-[#DDDBD6] transition-transform duration-500 hover:-translate-y-1">
               
-              {/* Subtle geometric detail: top coral tag */}
+              {/* Top status bar */}
               <div className="flex items-center justify-between pb-4 border-b border-[#111111]/15 mb-6">
                 <span className="text-[11px] font-mono tracking-widest uppercase text-[#111111]/70">
                   CREATIVE PROFILE
@@ -86,15 +124,36 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
               </div>
 
               {/* Portrait container inside hero card */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#E2DED6] mb-6 border border-[#111111]/15 shadow-sm">
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                title="Click to change portrait"
+                className="group/portrait relative aspect-[4/3] w-full overflow-hidden bg-[#E2DED6] mb-6 border border-[#111111]/15 shadow-sm cursor-pointer"
+              >
                 <img
                   src={profileImg}
                   alt={creatorProfile.name}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover/portrait:scale-105"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = navanithaStudioPortrait;
+                    const target = e.target as HTMLImageElement;
+                    if (!target.dataset.triedImagesJpeg) {
+                      target.dataset.triedImagesJpeg = 'true';
+                      target.src = '/images/profile-photo.jpeg';
+                    } else if (!target.dataset.triedRootJpg) {
+                      target.dataset.triedRootJpg = 'true';
+                      target.src = '/profile.jpg';
+                    } else if (!target.dataset.triedRootJpeg) {
+                      target.dataset.triedRootJpeg = 'true';
+                      target.src = '/profile.jpeg';
+                    }
                   }}
                 />
+                
+                {/* Hover overlay hint */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/portrait:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-mono tracking-wider uppercase">
+                  <Camera className="w-4 h-4" />
+                  <span>Change Photo</span>
+                </div>
+
                 {/* Thin inner geometric line */}
                 <div className="absolute inset-2 border border-white/20 pointer-events-none" />
               </div>
@@ -145,10 +204,17 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
 
       {/* 3. Bottom Scroll Indicator */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full pt-8 pb-12 flex items-center justify-between text-xs font-mono text-[#8A8A8A]">
-        <div className="flex items-center gap-2 tracking-widest uppercase">
-          <span className="text-[#C96B5A]">SCROLL</span>
-          <ArrowDown className="w-3.5 h-3.5 animate-bounce stroke-[1.5] text-[#C96B5A]" />
-        </div>
+        <button
+          type="button"
+          onClick={handleScrollToNext}
+          className="group flex items-center gap-2 tracking-widest uppercase cursor-pointer transition-colors duration-200 hover:text-[#F4F1EB] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C96B5A]"
+          aria-label="Scroll to next section"
+        >
+          <span className="text-[#C96B5A] transition-colors group-hover:text-[#e07f6e] underline-offset-4 group-hover:underline">
+            SCROLL
+          </span>
+          <ArrowDown className="w-3.5 h-3.5 animate-bounce stroke-[1.5] text-[#C96B5A] transition-transform group-hover:translate-y-0.5" />
+        </button>
 
         <div className="hidden sm:block tracking-widest uppercase text-[11px] text-[#8A8A8A]">
           CINEMA · TELEVISION · DIGITAL MEDIA
@@ -157,7 +223,6 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick }) => {
 
       {/* 4. Section 5: Editorial Angled Transition Shape */}
       <div className="relative w-full h-12 sm:h-20 overflow-hidden pointer-events-none -mb-[1px]">
-        {/* Angled trapezoidal cut connecting to Section 6 (Introduction) */}
         <svg
           viewBox="0 0 1440 80"
           fill="none"
