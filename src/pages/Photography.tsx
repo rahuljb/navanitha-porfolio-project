@@ -19,7 +19,7 @@ interface GalleryItem extends PortraitPhoto {
 }
 
 export const Photography: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<'All' | 'Portraits' | 'Visual Diary'>('Portraits');
+  const [activeCategory, setActiveCategory] = useState<'All' | 'Portraits' | 'Visual Diary'>('Visual Diary');
   const [viewMode, setViewMode] = useState<'pinterest' | 'filmstrip'>('pinterest');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -32,14 +32,14 @@ export const Photography: React.FC = () => {
     // 01. PORTRAITS — strictly from /public/images/portraits/
     ...portraitPhotos.map((photo, idx) => ({
       ...photo,
-      aspectClass: photo.aspectClass || (idx % 2 === 0 ? 'aspect-[4/5]' : 'aspect-[3/4]'),
+      aspectClass: '',
       rotationClass: idx % 2 === 0 ? 'sm:group-hover:rotate-[-0.6deg]' : 'sm:group-hover:rotate-[0.7deg]',
       tapeColor: idx % 3 === 0 ? 'bg-[#C96B5A]/20' : 'bg-white/10'
     })),
     // 02. VISUAL DIARY — strictly from /public/images/visualdiary/
     ...visualDiaryPhotos.map((photo, idx) => ({
       ...photo,
-      aspectClass: photo.aspectClass || (idx % 2 === 0 ? 'aspect-[16/10]' : 'aspect-[4/3]'),
+      aspectClass: '',
       rotationClass: idx % 2 === 0 ? 'sm:group-hover:rotate-[0.6deg]' : 'sm:group-hover:rotate-[-0.6deg]',
       tapeColor: idx % 2 === 0 ? 'bg-[#C96B5A]/20' : 'bg-white/10'
     }))
@@ -196,21 +196,20 @@ export const Photography: React.FC = () => {
                   className={`absolute -top-1.5 left-6 w-12 h-3.5 ${photo.tapeColor || 'bg-white/10'} backdrop-blur-md rounded-sm pointer-events-none z-30 shadow-sm border border-white/10`} 
                 />
 
-                {/* Pure Image Frame */}
-                <div className={`relative ${photo.aspectClass} w-full overflow-hidden bg-[#111111]`}>
+                {/* Native image dimensions — no crop, no forced aspect ratio */}
+                <div className="relative w-full overflow-hidden bg-[#111111]">
                   <img
                     src={photo.imageSrc}
-                    alt="Photography still"
+                    alt={`${photo.category} photograph`}
                     onError={() => {
                       setErrorImages((prev) => ({ ...prev, [photo.id]: true }));
                     }}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    loading="eager"
+                    className="block w-full h-auto rounded-xl transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.015]"
+                    loading={idx < 4 ? 'eager' : 'lazy'}
                     decoding="async"
                   />
 
-                  {/* Subtle Minimalist Hover Action */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                     <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md text-[#F4F1EB] flex items-center justify-center shadow-lg border border-white/20 transform scale-90 group-hover:scale-100 transition-transform">
                       <Maximize2 className="w-4 h-4" />
                     </div>

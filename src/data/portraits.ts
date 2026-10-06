@@ -1,3 +1,10 @@
+import diary0055 from '../assets/visualdiary/IMG_0055.JPG';
+import diary0733 from '../assets/visualdiary/IMG_0733.JPG';
+import diary2137 from '../assets/visualdiary/IMG_2137.JPG';
+import diary2275 from '../assets/visualdiary/IMG_2275.JPG';
+import diary2343 from '../assets/visualdiary/IMG_2343.JPG';
+import diary7778 from '../assets/visualdiary/IMG_7778.JPG';
+
 export interface PortraitPhoto {
   id: string;
   imageSrc: string;
@@ -5,84 +12,23 @@ export interface PortraitPhoto {
   category: 'Portraits' | 'Visual Diary';
 }
 
-// 01. PORTRAITS — strictly /public/images/portraits/
+// These entries mirror the image files that actually exist in /public/images.
 export const portraitPhotos: PortraitPhoto[] = [
-  {
-    id: 'portrait-1018',
-    imageSrc: '/images/portraits/IMG_1018.JPG',
-    aspectClass: 'aspect-[4/5]',
-    category: 'Portraits'
-  },
-  {
-    id: 'portrait-1094',
-    imageSrc: '/images/portraits/IMG_1094.JPG',
-    aspectClass: 'aspect-[3/4]',
-    category: 'Portraits'
-  },
-  {
-    id: 'portrait-1112',
-    imageSrc: '/images/portraits/IMG_1112.JPG',
-    aspectClass: 'aspect-[9/13]',
-    category: 'Portraits'
-  },
-  {
-    id: 'portrait-2776',
-    imageSrc: '/images/portraits/IMG_2776.JPG',
-    aspectClass: 'aspect-[4/5]',
-    category: 'Portraits'
-  },
-  {
-    id: 'portrait-6726',
-    imageSrc: '/images/portraits/IMG_6726.JPG',
-    aspectClass: 'aspect-[3/4]',
-    category: 'Portraits'
-  },
-  {
-    id: 'portrait-6837',
-    imageSrc: '/images/portraits/IMG_6837.JPG',
-    aspectClass: 'aspect-[1/1]',
-    category: 'Portraits'
-  }
+  { id: 'portrait-1018', imageSrc: '/images/portraits/IMG_1018.JPG', aspectClass: '', category: 'Portraits' },
+  { id: 'portrait-1094', imageSrc: '/images/portraits/IMG_1094.JPG', aspectClass: '', category: 'Portraits' },
+  { id: 'portrait-1112', imageSrc: '/images/portraits/IMG_1112.JPG', aspectClass: '', category: 'Portraits' },
+  { id: 'portrait-2776', imageSrc: '/images/portraits/IMG_2776.JPG', aspectClass: '', category: 'Portraits' },
+  { id: 'portrait-6726', imageSrc: '/images/portraits/IMG_6726.JPG', aspectClass: '', category: 'Portraits' },
+  { id: 'portrait-6837', imageSrc: '/images/portraits/IMG_6837.JPG', aspectClass: '', category: 'Portraits' },
 ];
 
-// 02. VISUAL DIARY — strictly /public/images/visualdiary/
 export const visualDiaryPhotos: PortraitPhoto[] = [
-  {
-    id: 'diary-7778',
-    imageSrc: '/images/visualdiary/IMG_7778.JPG',
-    aspectClass: 'aspect-[3/2]',
-    category: 'Visual Diary'
-  },
-  {
-    id: 'diary-0055',
-    imageSrc: '/images/visualdiary/IMG_0055.JPG',
-    aspectClass: 'aspect-[4/5]',
-    category: 'Visual Diary'
-  },
-  {
-    id: 'diary-0733',
-    imageSrc: '/images/visualdiary/IMG_0733.JPG',
-    aspectClass: 'aspect-[16/10]',
-    category: 'Visual Diary'
-  },
-  {
-    id: 'diary-2137',
-    imageSrc: '/images/visualdiary/IMG_2137.JPG',
-    aspectClass: 'aspect-[4/3]',
-    category: 'Visual Diary'
-  },
-  {
-    id: 'diary-2275',
-    imageSrc: '/images/visualdiary/IMG_2275.JPG',
-    aspectClass: 'aspect-[1/1]',
-    category: 'Visual Diary'
-  },
-  {
-    id: 'diary-2343',
-    imageSrc: '/images/visualdiary/IMG_2343.JPG',
-    aspectClass: 'aspect-[16/10]',
-    category: 'Visual Diary'
-  }
+  { id: 'diary-0055', imageSrc: diary0055, aspectClass: '', category: 'Visual Diary' },
+  { id: 'diary-0733', imageSrc: diary0733, aspectClass: '', category: 'Visual Diary' },
+  { id: 'diary-2137', imageSrc: diary2137, aspectClass: '', category: 'Visual Diary' },
+  { id: 'diary-2275', imageSrc: diary2275, aspectClass: '', category: 'Visual Diary' },
+  { id: 'diary-2343', imageSrc: diary2343, aspectClass: '', category: 'Visual Diary' },
+  { id: 'diary-7778', imageSrc: diary7778, aspectClass: '', category: 'Visual Diary' },
 ];
 
 export const allPhotographyItems = [...portraitPhotos, ...visualDiaryPhotos];
