@@ -66,10 +66,10 @@ export const Navbar: React.FC = () => {
               WORK
             </button>
             <button
-              onClick={() => scrollToSection('production')}
+              onClick={() => scrollToSection('journey')}
               className="hover:text-[#F4F1EB] transition-colors cursor-pointer"
             >
-              PRODUCTION
+              MY JOURNEY
             </button>
             <button
               onClick={() => scrollToSection('contact')}

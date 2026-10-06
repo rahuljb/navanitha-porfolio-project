@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Mail, Phone, ExternalLink, Check } from 'lucide-react';
+import { ArrowRight, Mail, Phone, ExternalLink, Check, MessageSquare } from 'lucide-react';
 import { creatorProfile } from '../data/projects';
 
 export const ContactSection: React.FC = () => {
@@ -11,17 +11,40 @@ export const ContactSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const validate = () => {
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setError('Please complete all fields to send your message.');
-      return;
+      return false;
     }
     if (!formData.email.includes('@')) {
       setError('Please provide a valid email address.');
-      return;
+      return false;
     }
     setError('');
+    return true;
+  };
+
+  const handleSendEmail = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!validate()) return;
+
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello Navanitha,\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}\n\n— Sent via navanithavijayakumar.web.app`
+    );
+
+    window.open(`mailto:${creatorProfile.email}?subject=${subject}&body=${body}`, '_blank');
+    setSubmitted(true);
+  };
+
+  const handleSendWhatsApp = () => {
+    if (!validate()) return;
+
+    const text = encodeURIComponent(
+      `Hi Navanitha! My name is ${formData.name} (${formData.email}).\n\n${formData.message}`
+    );
+
+    window.open(`https://wa.me/917356837413?text=${text}`, '_blank');
     setSubmitted(true);
   };
 
@@ -32,7 +55,7 @@ export const ContactSection: React.FC = () => {
         {/* Section Header */}
         <div className="flex items-center justify-between pb-6 border-b border-[#1E1E1E]">
           <span className="text-xs font-mono tracking-widest text-[#8A8A8A] uppercase">
-            07 — INQUIRIES & COLLABORATION
+            07 — INQUIRIES &amp; COLLABORATION
           </span>
           <span className="text-xs font-mono tracking-widest text-[#C96B5A] uppercase">
             CONNECT
@@ -96,7 +119,7 @@ export const ContactSection: React.FC = () => {
             {/* Social Channels */}
             <div className="space-y-3 pt-2">
               <span className="text-[11px] font-mono tracking-widest text-[#8A8A8A] uppercase block mb-1">
-                SOCIAL & NETWORK
+                SOCIAL &amp; NETWORK
               </span>
               <div className="flex flex-col space-y-2 text-xs font-mono uppercase tracking-widest">
                 <a
@@ -124,28 +147,44 @@ export const ContactSection: React.FC = () => {
           {/* Right: Minimal Form */}
           <div className="lg:col-span-7">
             {submitted ? (
-              <div className="p-8 sm:p-12 bg-[#0E0E0E] border border-[#1F1F1F] text-center space-y-4">
+              <div className="p-8 sm:p-12 bg-[#0E0E0E] border border-[#1F1F1F] text-center space-y-5">
                 <div className="w-12 h-12 rounded-full bg-[#181818] border border-[#333333] flex items-center justify-center mx-auto text-[#C96B5A]">
                   <Check className="w-6 h-6 stroke-[2]" />
                 </div>
                 <h4 className="text-2xl font-serif text-[#F4F1EB]">
-                  Message Received
+                  Message Dispatched
                 </h4>
                 <p className="text-sm text-[#8A8A8A] font-light max-w-md mx-auto leading-relaxed">
-                  Thank you for reaching out. Navanitha will review your note and get back to you shortly.
+                  Your inquiry has been routed to Navanitha's direct channels (Gmail &amp; WhatsApp). She will get back to you promptly.
                 </p>
+                <div className="pt-3 flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href={`mailto:${creatorProfile.email}`}
+                    className="px-4 py-2 border border-[#333333] text-xs font-mono uppercase tracking-wider text-[#F4F1EB] hover:border-[#C96B5A] transition-colors"
+                  >
+                    Open in Gmail
+                  </a>
+                  <a
+                    href={creatorProfile.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-[#25D366]/20 border border-[#25D366]/40 text-xs font-mono uppercase tracking-wider text-[#25D366] hover:bg-[#25D366]/30 transition-colors"
+                  >
+                    Open WhatsApp
+                  </a>
+                </div>
                 <button
                   onClick={() => {
                     setSubmitted(false);
                     setFormData({ name: '', email: '', message: '' });
                   }}
-                  className="pt-4 text-xs font-mono uppercase tracking-widest text-[#C96B5A] hover:underline cursor-pointer"
+                  className="pt-4 text-xs font-mono uppercase tracking-widest text-[#C96B5A] hover:underline cursor-pointer block mx-auto"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSendEmail} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-xs font-mono uppercase tracking-widest text-[#8A8A8A] mb-2">
                     YOUR NAME
@@ -192,13 +231,22 @@ export const ContactSection: React.FC = () => {
                   <p className="text-xs text-[#C96B5A] font-mono">{error}</p>
                 )}
 
-                <div className="pt-4">
+                <div className="pt-4 flex flex-wrap items-center gap-4">
                   <button
                     type="submit"
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-[#F4F1EB] text-[#111111] hover:bg-white transition-all text-xs font-mono uppercase tracking-widest cursor-pointer shadow-lg"
+                    className="group inline-flex items-center gap-3 px-7 py-4 bg-[#F4F1EB] text-[#111111] hover:bg-white transition-all text-xs font-mono uppercase tracking-widest cursor-pointer shadow-lg"
                   >
-                    <span>SEND MESSAGE</span>
+                    <span>SEND VIA EMAIL (GMAIL)</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#C96B5A]" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSendWhatsApp}
+                    className="inline-flex items-center gap-2.5 px-6 py-4 bg-[#121212] hover:bg-[#1A1A1A] border border-[#2A2A2A] hover:border-[#25D366] text-xs font-mono uppercase tracking-widest text-[#F4F1EB] hover:text-[#25D366] transition-all cursor-pointer"
+                  >
+                    <MessageSquare className="w-4 h-4 text-[#25D366]" />
+                    <span>SEND VIA WHATSAPP</span>
                   </button>
                 </div>
               </form>

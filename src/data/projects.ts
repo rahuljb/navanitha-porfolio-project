@@ -88,11 +88,11 @@ export const selectedWorks: Project[] = [
     category: 'Production',
     categoryLabel: 'Television & Episodic Direction',
     year: '2025',
-    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1600&q=80',
+    image: 'https://i.ytimg.com/vi/Ejf37qMUDTw/hqdefault.jpg',
     description: 'A multi-arc episodic drama balancing rapid dialogue rhythm, continuous spatial choreography, and nuanced camera staging across intense creative environments.',
     role: ['Episodic Director', 'Creative Producer'],
     client: 'Broadcast & Streaming Network',
-    youtubeId: 'dvoXNUJx2UI',
+    youtubeId: 'Ejf37qMUDTw',
     gallery: [
       'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80'
@@ -109,7 +109,6 @@ export const selectedWorks: Project[] = [
     description: 'An intimate neo-noir narrative short exploring psychological suspense, natural ambient shadows, and coastal audio landscapes in northern Chennai.',
     role: ['Director', 'Screenwriter'],
     client: 'Independent Film Collective',
-    youtubeId: 'KCJ6rgQtbRQ',
     gallery: [
       'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80'
@@ -126,7 +125,6 @@ export const selectedWorks: Project[] = [
     description: 'Sculpted commercial spot blending robotic motion control, probe macro cinematography, and tactile reflections to express artisanal craftsmanship.',
     role: ['Visual Director', 'Editor'],
     client: 'Atelier Horology Studio',
-    youtubeId: '9_YAq3i-vII',
     gallery: [
       'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=1200&q=80'

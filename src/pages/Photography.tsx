@@ -6,20 +6,23 @@ import {
   BookOpen, 
   Layers, 
   Film, 
-  Maximize2
+  Maximize2,
+  Palette
 } from 'lucide-react';
 import { Lightbox } from '../components/Lightbox';
 import { CreativeStatement } from '../components/CreativeStatement';
 import { ContactSection } from '../components/ContactSection';
-import { portraitPhotos, visualDiaryPhotos, type PortraitPhoto } from '../data/portraits';
+import { graphicDesignPhotos, portraitPhotos, visualDiaryPhotos, type PortraitPhoto } from '../data/portraits';
 
 interface GalleryItem extends PortraitPhoto {
   rotationClass?: string;
   tapeColor?: string;
 }
 
+type PhotoCategory = 'All' | 'Graphic Design' | 'Portraits' | 'Visual Diary';
+
 export const Photography: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<'All' | 'Portraits' | 'Visual Diary'>('Visual Diary');
+  const [activeCategory, setActiveCategory] = useState<PhotoCategory>('All');
   const [viewMode, setViewMode] = useState<'pinterest' | 'filmstrip'>('pinterest');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [errorImages, setErrorImages] = useState<Record<string, boolean>>({});
@@ -29,19 +32,26 @@ export const Photography: React.FC = () => {
   }, []);
 
   const allStills: GalleryItem[] = [
-    // 01. PORTRAITS — strictly from /public/images/portraits/
+    // 01. PORTRAITS — highest priority
     ...portraitPhotos.map((photo, idx) => ({
       ...photo,
       aspectClass: '',
       rotationClass: idx % 2 === 0 ? 'sm:group-hover:rotate-[-0.6deg]' : 'sm:group-hover:rotate-[0.7deg]',
       tapeColor: idx % 3 === 0 ? 'bg-[#C96B5A]/20' : 'bg-white/10'
     })),
-    // 02. VISUAL DIARY — strictly from /public/images/visualdiary/
+    // 02. VISUAL DIARY — second priority
     ...visualDiaryPhotos.map((photo, idx) => ({
       ...photo,
       aspectClass: '',
       rotationClass: idx % 2 === 0 ? 'sm:group-hover:rotate-[0.6deg]' : 'sm:group-hover:rotate-[-0.6deg]',
       tapeColor: idx % 2 === 0 ? 'bg-[#C96B5A]/20' : 'bg-white/10'
+    })),
+    // 03. GRAPHIC DESIGNING — third priority
+    ...graphicDesignPhotos.map((photo, idx) => ({
+      ...photo,
+      aspectClass: '',
+      rotationClass: idx % 2 === 0 ? 'sm:group-hover:rotate-[-0.6deg]' : 'sm:group-hover:rotate-[0.6deg]',
+      tapeColor: idx % 3 === 0 ? 'bg-[#C96B5A]/25' : 'bg-white/10'
     }))
   ];
 
@@ -54,9 +64,10 @@ export const Photography: React.FC = () => {
   const availablePhotos = categoryStills.filter((p) => !errorImages[p.id]);
   const imageUrls = availablePhotos.map((p) => p.imageSrc);
 
+  const graphicDesignLiveCount = graphicDesignPhotos.filter((p) => !errorImages[p.id]).length;
   const portraitsLiveCount = portraitPhotos.filter((p) => !errorImages[p.id]).length;
   const diaryLiveCount = visualDiaryPhotos.filter((p) => !errorImages[p.id]).length;
-  const totalLiveCount = portraitsLiveCount + diaryLiveCount;
+  const totalLiveCount = graphicDesignLiveCount + portraitsLiveCount + diaryLiveCount;
 
   return (
     <div className="pt-24 bg-[#0A0A0A] text-[#F4F1EB] min-h-screen selection:bg-[#C96B5A] selection:text-white">
@@ -75,32 +86,44 @@ export const Photography: React.FC = () => {
           <div className="flex items-center gap-3 text-xs font-mono text-[#8A8A8A]">
             <span className="text-[#C96B5A]">PHASE 04</span>
             <span className="text-[#333333]">/</span>
-            <span>PHOTOGRAPHY</span>
+            <span>PHOTOGRAPHY &amp; GRAPHIC DESIGN</span>
           </div>
         </div>
 
         {/* Section Header */}
         <div className="text-center space-y-5 max-w-3xl mx-auto">
           <div className="flex items-center justify-center gap-3 text-xs font-mono tracking-widest text-[#C96B5A] uppercase">
-            <span>04 — STILLS &amp; ARCHIVE</span>
+            <span>04 — VISUAL CULTURE &amp; ARCHIVE</span>
             <span className="w-6 h-[1px] bg-[#333333]" />
-            <span className="text-[#8A8A8A]">PORTRAITS &amp; VISUAL DIARY</span>
+            <span className="text-[#8A8A8A]">POSTERS, PORTRAITS &amp; DIARY</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-[#F4F1EB] font-normal tracking-tight">
-            PHOTOGRAPHY
+            PHOTOGRAPHY &amp; DESIGN
           </h1>
 
           <p className="text-sm sm:text-base text-[#8A8A8A] font-light leading-relaxed max-w-2xl mx-auto">
-            An evolving visual archive of human stories and lived moments, exploring character, atmosphere, natural light, urban rhythms, and the quiet beauty found in ordinary places.
+            An evolving visual archive of graphic posters, brand key art, magazine editorials, human portraiture, and quiet visual diary frames.
           </p>
         </div>
 
         {/* Primary Controls: Filter Tabs + Layout Mode Switcher */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-[#1C1C1C] pb-6">
           
-          {/* Category Tabs: PORTRAITS | ALL | VISUAL DIARY */}
+          {/* Category Tabs: ALL | PORTRAITS | VISUAL DIARY | GRAPHIC DESIGN */}
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => setActiveCategory('All')}
+              className={`px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                activeCategory === 'All'
+                  ? 'bg-[#C96B5A] text-white shadow-lg shadow-[#C96B5A]/25'
+                  : 'bg-[#121212] text-[#8A8A8A] border border-[#222222] hover:border-[#444444] hover:text-[#F4F1EB]'
+              }`}
+            >
+              All Stills ({totalLiveCount})
+            </button>
+
             <button
               type="button"
               onClick={() => setActiveCategory('Portraits')}
@@ -116,18 +139,6 @@ export const Photography: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => setActiveCategory('All')}
-              className={`px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                activeCategory === 'All'
-                  ? 'bg-[#C96B5A] text-white shadow-lg shadow-[#C96B5A]/25'
-                  : 'bg-[#121212] text-[#8A8A8A] border border-[#222222] hover:border-[#444444] hover:text-[#F4F1EB]'
-              }`}
-            >
-              All Stills ({totalLiveCount})
-            </button>
-
-            <button
-              type="button"
               onClick={() => setActiveCategory('Visual Diary')}
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
                 activeCategory === 'Visual Diary'
@@ -137,6 +148,19 @@ export const Photography: React.FC = () => {
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>Visual Diary ({diaryLiveCount})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveCategory('Graphic Design')}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                activeCategory === 'Graphic Design'
+                  ? 'bg-[#C96B5A] text-white shadow-lg shadow-[#C96B5A]/25'
+                  : 'bg-[#121212] text-[#8A8A8A] border border-[#222222] hover:border-[#444444] hover:text-[#F4F1EB]'
+              }`}
+            >
+              <Palette className="w-3.5 h-3.5" />
+              <span>Graphic Design ({graphicDesignLiveCount})</span>
             </button>
           </div>
 
@@ -215,89 +239,83 @@ export const Photography: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Clean Editorial Caption */}
+                <div className="p-4 border-t border-[#1C1C1C] flex items-center justify-between text-[11px] font-mono text-[#8A8A8A] bg-[#0E0E0E]">
+                  <span className="text-[#F4F1EB] truncate">{photo.title || photo.category}</span>
+                  <span className="text-[#C96B5A] uppercase">{photo.category}</span>
+                </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* --- VIEW 2: 35MM FILMSTRIP CONTACT SHEET --- */}
+        {/* --- VIEW 2: 35mm FILMSTRIP CONTACT SHEET --- */}
         {viewMode === 'filmstrip' && (
-          <div className="space-y-8">
-            <div className="flex items-center justify-between text-xs font-mono text-[#8A8A8A] uppercase tracking-widest pb-2 border-b border-[#181818]">
-              <div className="flex items-center gap-2">
-                <Film className="w-3.5 h-3.5 text-[#C96B5A]" />
-                <span>35MM ANALOG CONTACT SHEET</span>
+          <div className="space-y-12">
+            <div className="bg-[#080808] p-6 sm:p-10 rounded-2xl border border-[#222222] shadow-2xl">
+              
+              {/* Sprocket Holes Top */}
+              <div className="flex justify-between items-center pb-6 border-b border-[#1A1A1A] overflow-hidden opacity-50 select-none">
+                {Array.from({ length: 16 }).map((_, i) => (
+                  <div key={i} className="w-4 h-6 rounded-sm bg-[#161616] border border-[#282828] shrink-0" />
+                ))}
               </div>
-              <span className="text-[#C96B5A]">{availablePhotos.length} STILLS</span>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {availablePhotos.map((photo, idx) => (
-                <div
-                  key={photo.id}
-                  onClick={() => setLightboxIndex(idx)}
-                  className="group cursor-pointer bg-[#050505] p-3 sm:p-4 rounded-xl border border-[#222222] hover:border-[#C96B5A] transition-all duration-300 shadow-2xl relative"
-                >
-                  {/* 35mm Sprocket Holes Header */}
-                  <div className="flex justify-between items-center px-2 py-1.5 border-b border-[#1A1A1A] mb-3">
-                    <span className="text-[10px] font-mono tracking-widest text-[#555555]">
-                      35MM NEGATIVE
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
-                      <span className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
-                      <span className="w-2 h-2 rounded-full bg-[#1A1A1A]" />
+              {/* Horizontal Scrolling Film Negative Roll */}
+              <div className="py-8 flex gap-8 overflow-x-auto scrollbar-none snap-x snap-mandatory">
+                {availablePhotos.map((photo, idx) => (
+                  <div
+                    key={photo.id}
+                    onClick={() => setLightboxIndex(idx)}
+                    className="shrink-0 snap-center w-[280px] sm:w-[360px] group cursor-pointer space-y-3"
+                  >
+                    <div className="relative aspect-[4/5] rounded-lg overflow-hidden bg-[#111111] border border-[#222222] group-hover:border-[#C96B5A] transition-colors">
+                      <img
+                        src={photo.imageSrc}
+                        alt="Photography still"
+                        onError={() => {
+                          setErrorImages((prev) => ({ ...prev, [photo.id]: true }));
+                        }}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                     </div>
-                    <span className="text-[10px] font-mono text-[#C96B5A] font-bold">
-                      ▲ {String(idx + 1).padStart(2, '0')}
-                    </span>
-                  </div>
 
-                  {/* Frame */}
-                  <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full overflow-hidden rounded bg-black">
-                    <img
-                      src={photo.imageSrc}
-                      alt="Photography still"
-                      onError={() => {
-                        setErrorImages((prev) => ({ ...prev, [photo.id]: true }));
-                      }}
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      loading="eager"
-                      decoding="async"
-                    />
-
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-black/70 backdrop-blur-md text-[#F4F1EB] flex items-center justify-center shadow-lg border border-white/20">
-                        <Maximize2 className="w-4 h-4" />
-                      </div>
+                    <div className="flex items-center justify-between text-[10px] font-mono text-[#8A8A8A] px-1">
+                      <span className="text-[#C96B5A] tracking-widest">EXP #{String(idx + 1).padStart(2, '0')}</span>
+                      <span className="truncate max-w-[180px]">{photo.title || photo.category}</span>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              {/* Sprocket Holes Bottom */}
+              <div className="flex justify-between items-center pt-6 border-t border-[#1A1A1A] overflow-hidden opacity-50 select-none">
+                {Array.from({ length: 16 }).map((_, i) => (
+                  <div key={i} className="w-4 h-6 rounded-sm bg-[#161616] border border-[#282828] shrink-0" />
+                ))}
+              </div>
+
             </div>
           </div>
         )}
 
-        {/* Pure Fullscreen Lightbox */}
-        <Lightbox
-          isOpen={lightboxIndex !== null && imageUrls.length > 0}
-          images={imageUrls}
-          currentIndex={lightboxIndex || 0}
-          caption=""
-          onClose={() => setLightboxIndex(null)}
-          onPrev={() =>
-            setLightboxIndex((prev) =>
-              prev !== null ? (prev - 1 + imageUrls.length) % imageUrls.length : 0
-            )
-          }
-          onNext={() =>
-            setLightboxIndex((prev) =>
-              prev !== null ? (prev + 1) % imageUrls.length : 0
-            )
-          }
-        />
-
       </div>
+
+      {/* Fullscreen Interactive Lightbox */}
+      {lightboxIndex !== null && (
+        <Lightbox
+          isOpen={lightboxIndex !== null}
+          images={imageUrls}
+          currentIndex={lightboxIndex}
+          caption={availablePhotos[lightboxIndex]?.title || availablePhotos[lightboxIndex]?.category}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex((prev) => (prev !== null ? (prev - 1 + imageUrls.length) % imageUrls.length : null))}
+          onNext={() => setLightboxIndex((prev) => (prev !== null ? (prev + 1) % imageUrls.length : null))}
+        />
+      )}
 
       <CreativeStatement />
       <ContactSection />

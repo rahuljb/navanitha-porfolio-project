@@ -13,7 +13,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavig
   const menuItems = [
     { id: 'about', label: 'ABOUT ME' },
     { id: 'work', label: 'WORK' },
-    { id: 'production', label: 'PRODUCTION' },
+    { id: 'journey', label: 'MY JOURNEY' },
     { id: 'contact', label: 'CONTACT' }
   ];
 

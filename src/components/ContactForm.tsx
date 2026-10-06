@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, MessageSquare } from 'lucide-react';
+import { creatorProfile } from '../data/projects';
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -28,16 +29,30 @@ export const ContactForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    // Simulate brief client-side handling
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-    }, 600);
+    const subject = encodeURIComponent(`Project Inquiry [${formData.projectType}] from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello Navanitha,\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${formData.projectType}\n\nMessage:\n${formData.message}\n\n— Sent from navanithavijayakumar.web.app`
+    );
+
+    window.open(`mailto:${creatorProfile.email}?subject=${subject}&body=${body}`, '_blank');
+    setIsSubmitting(false);
+    setSubmitted(true);
+  };
+
+  const handleSendWhatsApp = () => {
+    if (!validate()) return;
+
+    const text = encodeURIComponent(
+      `Hi Navanitha! My name is ${formData.name} (${formData.email}).\nProject Type: ${formData.projectType}\n\n${formData.message}`
+    );
+
+    window.open(`https://wa.me/917356837413?text=${text}`, '_blank');
+    setSubmitted(true);
   };
 
   if (submitted) {
@@ -50,8 +65,24 @@ export const ContactForm: React.FC = () => {
           Thank you for reaching out.
         </h3>
         <p className="text-sm text-[#777777] font-light max-w-md mx-auto leading-relaxed">
-          Your project inquiry has been received. I review briefs carefully and will respond to your email within 24–48 hours.
+          Your project inquiry has been formatted and routed to Navanitha's direct channels ({creatorProfile.email}). She will respond within 24–48 hours.
         </p>
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`mailto:${creatorProfile.email}`}
+            className="px-4 py-2 border border-[#111111] text-xs font-mono uppercase tracking-wider text-[#111111] hover:bg-[#111111] hover:text-white transition-colors"
+          >
+            Open in Gmail
+          </a>
+          <a
+            href={creatorProfile.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-[#25D366]/20 border border-[#25D366]/40 text-xs font-mono uppercase tracking-wider text-[#1b7e3f] hover:bg-[#25D366]/30 transition-colors"
+          >
+            Open WhatsApp
+          </a>
+        </div>
         <div className="pt-4">
           <button
             onClick={() => {
@@ -68,10 +99,10 @@ export const ContactForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+    <form onSubmit={handleSendEmail} className="space-y-6" noValidate>
       <div>
-        <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2">
-          Name *
+        <label htmlFor="name" className="block text-xs font-mono uppercase tracking-widest text-[#777777] mb-2">
+          Your Name <span className="text-red-500">*</span>
         </label>
         <input
           id="name"
@@ -81,15 +112,15 @@ export const ContactForm: React.FC = () => {
             setFormData({ ...formData, name: e.target.value });
             if (errors.name) setErrors({ ...errors, name: '' });
           }}
-          placeholder="Your name or production house"
-          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] placeholder:text-[#AAAAAA] transition-colors"
+          placeholder="Maya Sundaram"
+          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] p-4 text-sm text-[#111111] focus:outline-none focus:border-[#111111] placeholder:text-[#AAAAAA] transition-colors"
         />
         {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2">
-          Email *
+        <label htmlFor="email" className="block text-xs font-mono uppercase tracking-widest text-[#777777] mb-2">
+          Your Email <span className="text-red-500">*</span>
         </label>
         <input
           id="email"
@@ -99,33 +130,34 @@ export const ContactForm: React.FC = () => {
             setFormData({ ...formData, email: e.target.value });
             if (errors.email) setErrors({ ...errors, email: '' });
           }}
-          placeholder="your.email@company.com"
-          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] placeholder:text-[#AAAAAA] transition-colors"
+          placeholder="maya@studio.com"
+          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] p-4 text-sm text-[#111111] focus:outline-none focus:border-[#111111] placeholder:text-[#AAAAAA] transition-colors"
         />
         {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="projectType" className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2">
+        <label htmlFor="projectType" className="block text-xs font-mono uppercase tracking-widest text-[#777777] mb-2">
           Project Type
         </label>
         <select
           id="projectType"
           value={formData.projectType}
           onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors cursor-pointer"
+          className="w-full bg-[#FFFFFF] border border-[#DDDBD6] p-4 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors cursor-pointer"
         >
           <option value="Film / Video Production">Film / Video Production</option>
-          <option value="Commercial / Ad Photoshoot">Commercial / Ad Photoshoot</option>
-          <option value="Documentary / Interview">Documentary / Interview</option>
+          <option value="Commercial / Ad Film">Commercial / Ad Film</option>
+          <option value="Celebrity / Creator Interview">Celebrity / Creator Interview</option>
           <option value="Photography Campaign">Photography Campaign</option>
-          <option value="Creative Direction & Consulting">Creative Direction & Consulting</option>
+          <option value="Graphic Design / Poster Art">Graphic Design / Poster Art</option>
+          <option value="Creative Direction / Other">Creative Direction / Other</option>
         </select>
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-[#777777] mb-2">
-          Message *
+        <label htmlFor="message" className="block text-xs font-mono uppercase tracking-widest text-[#777777] mb-2">
+          Message <span className="text-red-500">*</span>
         </label>
         <textarea
           id="message"
@@ -141,14 +173,23 @@ export const ContactForm: React.FC = () => {
         {errors.message && <p className="text-xs text-red-600 mt-1">{errors.message}</p>}
       </div>
 
-      <div>
+      <div className="pt-2 flex flex-wrap items-center gap-4">
         <button
           type="submit"
           disabled={isSubmitting}
           className="group inline-flex items-center gap-3 px-8 py-4 bg-[#111111] text-[#F5F3EF] hover:bg-black transition-all cursor-pointer disabled:opacity-50 text-xs font-mono uppercase tracking-widest"
         >
-          <span>{isSubmitting ? 'Sending...' : 'SEND MESSAGE'}</span>
+          <span>SEND VIA GMAIL</span>
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSendWhatsApp}
+          className="inline-flex items-center gap-2.5 px-6 py-4 bg-white hover:bg-gray-50 border border-[#DDDBD6] hover:border-[#25D366] text-xs font-mono uppercase tracking-widest text-[#111111] hover:text-[#1b7e3f] transition-all cursor-pointer"
+        >
+          <MessageSquare className="w-4 h-4 text-[#25D366]" />
+          <span>SEND VIA WHATSAPP</span>
         </button>
       </div>
     </form>

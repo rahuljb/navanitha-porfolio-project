@@ -62,12 +62,14 @@ export const FilmInterview: React.FC = () => {
               
               <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors duration-300" />
 
-              {/* Play Button Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white text-[#111111] flex items-center justify-center shadow-xl transition-transform duration-300 ease-out group-hover:scale-110">
-                  <Play className="w-6 h-6 fill-current ml-0.5" />
+              {/* Play Button Overlay - only for video items */}
+              {video.youtubeId && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-white text-[#111111] flex items-center justify-center shadow-xl transition-transform duration-300 ease-out group-hover:scale-110">
+                    <Play className="w-6 h-6 fill-current ml-0.5" />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {video.duration && (
                 <div className="absolute bottom-3 right-3 px-2 py-0.5 bg-black/70 backdrop-blur-sm text-[10px] font-mono text-white rounded-sm">

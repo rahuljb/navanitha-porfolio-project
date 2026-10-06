@@ -47,9 +47,9 @@ export function getEmbedVideoUrl(url?: string | null, youtubeId?: string | null)
       return cleanUrl;
     }
 
-    // 3. YouTube URL handling:
+    // 3. YouTube URL handling (supports regular, embed, watch, youtu.be, and shorts):
     if (cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be')) {
-      const ytMatch = cleanUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      const ytMatch = cleanUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
       if (ytMatch && ytMatch[1]) {
         return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1`;
       }

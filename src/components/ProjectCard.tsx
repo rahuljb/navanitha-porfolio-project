@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowUpRight, Play, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Project } from '../data/projects';
 
 interface ProjectCardProps {
@@ -18,6 +18,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   onHover,
   onLeave,
 }) => {
+  const navigate = useNavigate();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [thumbnailStage, setThumbnailStage] = useState(0);
 
@@ -32,8 +33,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const thumbnailSrc = thumbnailSources[Math.min(thumbnailStage, thumbnailSources.length - 1)];
 
-  const openVideo = () => {
-    if (project.youtubeId) setIsVideoOpen(true);
+  const handleCardClick = () => {
+    if (project.youtubeId) {
+      setIsVideoOpen(true);
+    } else {
+      navigate(`/project/${project.id}`);
+    }
   };
 
   const closeVideo = () => setIsVideoOpen(false);
@@ -74,10 +79,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="relative">
           <button
             type="button"
-            onClick={openVideo}
-            disabled={!project.youtubeId}
-            className="group/video relative block w-full aspect-[16/10] overflow-hidden bg-[#0D0D0D] border border-[#292929] text-left disabled:cursor-default"
-            aria-label={project.youtubeId ? `Watch ${project.title}` : project.title}
+            onClick={handleCardClick}
+            className="group/video relative block w-full aspect-[16/10] overflow-hidden bg-[#0D0D0D] border border-[#292929] text-left cursor-pointer"
+            aria-label={project.youtubeId ? `Watch ${project.title}` : `View ${project.title}`}
           >
             {/* Reliable YouTube thumbnail with several fallbacks. */}
             <img
@@ -102,11 +106,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               {project.year}
             </div>
 
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="flex items-center justify-center w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full border border-white/50 bg-black/55 backdrop-blur-sm transition-all duration-500 group-hover/video:scale-110 group-hover/video:border-[#C96B5A] group-hover/video:bg-[#C96B5A]">
-                <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-white ml-1" />
-              </span>
-            </div>
+            {project.youtubeId && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="flex items-center justify-center w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full border border-white/50 bg-black/55 backdrop-blur-sm transition-all duration-500 group-hover/video:scale-110 group-hover/video:border-[#C96B5A] group-hover/video:bg-[#C96B5A]">
+                  <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-white ml-1" />
+                </span>
+              </div>
+            )}
 
             <div className="absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
               <p className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/55 mb-2">
@@ -135,7 +141,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             {project.youtubeId ? (
               <button
                 type="button"
-                onClick={openVideo}
+                onClick={handleCardClick}
                 className="shrink-0 inline-flex items-center gap-2 text-[9px] font-mono uppercase tracking-[0.16em] text-[#F4F1EB] hover:text-[#C96B5A] transition-colors"
               >
                 Watch

@@ -40,7 +40,7 @@ export const SocialMediaShowcase: React.FC = () => {
           <div className="flex items-center justify-center gap-3 text-xs font-mono tracking-widest text-[#C96B5A] uppercase">
             <span>03 — BRAND &amp; VIRAL MOTION</span>
             <span className="w-6 h-[1px] bg-[#333333]" />
-            <span className="text-[#8A8A8A]">6 CINEMA SCREENINGS</span>
+            <span className="text-[#8A8A8A]">CAMPAIGN ARCHIVE</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-[#F4F1EB] font-normal tracking-tight">
@@ -87,11 +87,25 @@ export const SocialMediaShowcase: React.FC = () => {
           })}
         </div>
 
-        {/* Central Featured Cinema Video Stage - safely hidden if URL not available */}
+        {/* Central Featured Visual Stage */}
         <div className="space-y-8 max-w-5xl mx-auto">
-          {hasValidVideoUrl(activeVideo) && (
-            <VideoPlayer key={activeVideo.id} video={activeVideo} />
-          )}
+          <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-[#222222] bg-[#0A0A0A] shadow-2xl">
+            <img
+              src={activeVideo.thumbnail}
+              alt={activeVideo.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#C96B5A]">
+                  CAMPAIGN ARCHIVE · STILL
+                </span>
+                <h4 className="text-xl sm:text-2xl font-serif text-[#F4F1EB] mt-1">{activeVideo.title}</h4>
+              </div>
+              <span className="text-xs font-mono text-[#8A8A8A] uppercase tracking-wider">{activeVideo.year}</span>
+            </div>
+          </div>
 
           {/* Title & Production Credits */}
           <div className="text-center space-y-4 max-w-2xl mx-auto pt-2">
