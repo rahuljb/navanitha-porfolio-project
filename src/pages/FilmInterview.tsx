@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Play } from 'lucide-react';
 import { videos, VideoItem } from '../data/videos';
 import { VideoModal } from '../components/VideoModal';
+import { ContactSection } from '../components/ContactSection';
 
 export const FilmInterview: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
@@ -111,6 +112,8 @@ export const FilmInterview: React.FC = () => {
         year={selectedVideo?.year}
       />
 
+      {/* 07 — INQUIRIES & COLLABORATION Section */}
+      <ContactSection />
     </div>
   );
 };

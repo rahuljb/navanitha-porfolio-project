@@ -101,7 +101,7 @@
 }
 
 
-/* Refined portrait treatment: no jumpy scale; the portrait remains calm and editorial. */
+/* Refined portrait treatment: cinematic floating motion, ambient glow, and editorial depth */
 .profile-portrait-shell {
   position: relative;
 }
@@ -110,27 +110,65 @@
   content: "";
   position: absolute;
   inset: 18px -14px -14px 18px;
-  border: 1px solid rgba(244,241,235,.12);
+  border: 1px solid rgba(244,241,235,.15);
   border-radius: 36px;
   transform: rotate(1.2deg);
   pointer-events: none;
   z-index: -1;
+  transition: transform 700ms var(--ease-cinematic), border-color 700ms ease;
+}
+
+.profile-portrait-shell:hover::before {
+  transform: rotate(2.4deg) scale(1.02);
+  border-color: rgba(201,107,90,.3);
+}
+
+@keyframes profileFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-0.4deg);
+  }
+}
+
+@keyframes profileGlowPulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+}
+
+.animate-profile-float {
+  animation: profileFloat 7s ease-in-out infinite;
+}
+
+.animate-profile-glow {
+  animation: profileGlowPulse 5s ease-in-out infinite;
 }
 
 .profile-portrait-frame {
   position: relative;
   transform: translateZ(0);
-  transition: box-shadow 900ms var(--ease-cinematic), transform 900ms var(--ease-cinematic);
+  transition: box-shadow 700ms var(--ease-cinematic), transform 700ms var(--ease-cinematic);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .profile-portrait-frame:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 38px 105px rgba(0,0,0,.46);
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 45px 120px rgba(0,0,0,.55), 0 15px 40px rgba(201,107,90,.18);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-profile-float,
+  .animate-profile-glow {
+    animation: none !important;
+  }
   .profile-portrait-frame { transition: none; }
   .profile-portrait-frame:hover { transform: none; }
 }

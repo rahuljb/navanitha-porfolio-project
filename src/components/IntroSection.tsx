@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowDown } from 'lucide-react';
 import { creatorProfile } from '../data/projects';
 
 export const IntroSection: React.FC = () => {
@@ -28,14 +27,10 @@ export const IntroSection: React.FC = () => {
                 <span className="block italic font-light text-black/55">that stay.</span>
               </h2>
 
-              <div className="mt-12 grid gap-8 border-t border-black/10 pt-8 sm:grid-cols-[1fr_auto] sm:items-end">
+              <div className="mt-12 border-t border-black/10 pt-8">
                 <p className="max-w-2xl text-base leading-7 text-black/62 sm:text-lg">
                   {creatorProfile.bioShort}
                 </p>
-                <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[.2em] text-black/45">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-black/15"><ArrowDown className="h-3.5 w-3.5" /></span>
-                  Keep scrolling
-                </div>
               </div>
             </div>
           </div>

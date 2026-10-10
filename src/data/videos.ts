@@ -35,7 +35,7 @@ export const celebrityInterviewVideo: ProductionVideo = {
 
 /**
  * FILMS & PRODUCTION
- * 4 active YouTube video screenings requested by the user.
+ * 5 active YouTube video screenings.
  */
 export const filmsAndProductionVideos: ProductionVideo[] = [
   {
@@ -85,6 +85,18 @@ export const filmsAndProductionVideos: ProductionVideo[] = [
     youtubeUrl: 'https://www.youtube.com/watch?v=HVhoRcdmWi4',
     thumbnail: 'https://i.ytimg.com/vi/HVhoRcdmWi4/hqdefault.jpg',
     description: 'A Valentine’s Day special narrative short film for Zero Angle Entertainments, balancing whimsical romance, emotive storytelling, and vivid cinematic frames.'
+  },
+  {
+    id: 15,
+    number: '05',
+    category: 'Film & Industry · Celebrity Interview',
+    title: 'INTERVIEW WITH SHAMEER MUHAMMED',
+    year: '2024',
+    role: 'Director · Interviewer',
+    youtubeId: '54M4EZ7-RfQ',
+    youtubeUrl: 'https://www.youtube.com/watch?v=54M4EZ7-RfQ',
+    thumbnail: 'https://i.ytimg.com/vi/54M4EZ7-RfQ/hqdefault.jpg',
+    description: 'An insightful industry conversation with acclaimed film editor Shameer Muhammed, exploring narrative pacing, post-production craft, and cinematic storytelling.'
   }
 ];
 

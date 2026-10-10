@@ -120,7 +120,7 @@ export const PhotographySection: React.FC = () => {
   };
 
   return (
-    <section id="photography" className="relative w-full bg-[#F1EEE7] text-[#111111] border-b border-black/10 py-24 sm:py-32 px-5 sm:px-8 lg:px-12">
+    <section id="photography" className="relative w-full bg-[#F1EEE7] text-[#111111] rounded-[18px] sm:rounded-[24px] overflow-hidden py-24 sm:py-32 px-5 sm:px-8 lg:px-12 my-2 sm:my-3">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 pb-10 sm:pb-14 border-b border-black/15">
           <div className="max-w-3xl">
@@ -198,26 +198,6 @@ export const PhotographySection: React.FC = () => {
           >
             <ChevronLeft className="w-8 h-8 sm:w-10 sm:h-10" />
           </button>
-
-          <div
-            className="max-h-[86vh] max-w-[92vw] flex flex-col items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={images[activeIndex]}
-              alt={photographyPhotos[activeIndex].title || `${photographyPhotos[activeIndex].category} image`}
-              className="max-h-[80vh] max-w-[90vw] w-auto h-auto object-contain shadow-2xl rounded-[14px]"
-            />
-            <div className="mt-3 text-center">
-              <h4 className="text-sm sm:text-base font-serif text-[#F4F1EB]">
-                {photographyPhotos[activeIndex].title || photographyPhotos[activeIndex].category}
-              </h4>
-              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/50 mt-1">
-                {String(activeIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')} · {photographyPhotos[activeIndex].category}
-              </p>
-            </div>
-          </div>
-
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -228,6 +208,21 @@ export const PhotographySection: React.FC = () => {
           >
             <ChevronRight className="w-8 h-8 sm:w-10 sm:h-10" />
           </button>
+          <div
+            className="relative max-h-[88vh] max-w-[92vw] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={photographyPhotos[activeIndex].src}
+              alt={photographyPhotos[activeIndex].title || 'Enlarged photograph'}
+              className="max-h-[82vh] max-w-[88vw] object-contain rounded-[14px] shadow-2xl"
+            />
+            {photographyPhotos[activeIndex].title && (
+              <div className="mt-3 text-center text-xs font-mono tracking-widest uppercase text-white/70">
+                {photographyPhotos[activeIndex].title} · {photographyPhotos[activeIndex].category}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </section>

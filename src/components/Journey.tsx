@@ -27,7 +27,7 @@ const journeyPhases: JourneyPhase[] = [
     number: '01',
     step: 'FILMS & PRODUCTION',
     domain: 'Cinema & Full Production',
-    tagline: '4 YouTube Screenings: Web Series, Short Films & Romance Special',
+    tagline: '5 YouTube Screenings: Web Series, Short Films & Industry Interview',
     description: 'Crafting emotionally resonant cinematic stories alongside full physical production leadership — camera direction, scheduling, crew synergy, lighting orchestration, and post-production polish.',
     targetId: 'production',
     targetRoute: '/work/production',

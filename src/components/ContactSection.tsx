@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowRight, Mail, Phone, ExternalLink, Check, MessageSquare } from 'lucide-react';
+import { ArrowRight, Mail, Phone, ExternalLink, Check } from 'lucide-react';
 import { creatorProfile } from '../data/projects';
+import { CinematicLightCanvas } from './CinematicLightCanvas';
 
-export const ContactSection: React.FC = () => {
+interface ContactSectionProps {
+  standalone?: boolean;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ standalone = false }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,20 +42,17 @@ export const ContactSection: React.FC = () => {
     setSubmitted(true);
   };
 
-  const handleSendWhatsApp = () => {
-    if (!validate()) return;
-
-    const text = encodeURIComponent(
-      `Hi Navanitha! My name is ${formData.name} (${formData.email}).\n\n${formData.message}`
-    );
-
-    window.open(`https://wa.me/917356837413?text=${text}`, '_blank');
-    setSubmitted(true);
-  };
-
   return (
-    <section id="contact" className="relative w-full py-28 sm:py-44 px-6 sm:px-10 lg:px-12 bg-[#0A0A0A] border-b border-[#1A1A1A]">
-      <div className="max-w-7xl mx-auto space-y-16 sm:space-y-24">
+    <section id="contact" className="relative w-full pt-16 pb-28 sm:pt-20 sm:pb-44 px-6 sm:px-10 lg:px-12 bg-transparent z-10 border-b border-[#1A1A1A]">
+      {/* If standalone on /contact, render own canvas; otherwise shares unified canvas from CreativeStatement */}
+      {standalone && (
+        <>
+          <CinematicLightCanvas intensity={1.0} moteCount={30} showRibbons={true} showHorizon={false} />
+          <div className="absolute inset-0 film-grain opacity-20 pointer-events-none z-0" />
+        </>
+      )}
+
+      <div className="relative z-10 max-w-7xl mx-auto space-y-16 sm:space-y-24">
         
         {/* Section Header */}
         <div className="flex items-center justify-between pb-6 border-b border-[#1E1E1E]">
@@ -231,22 +233,13 @@ export const ContactSection: React.FC = () => {
                   <p className="text-xs text-[#C96B5A] font-mono">{error}</p>
                 )}
 
-                <div className="pt-4 flex flex-wrap items-center gap-4">
+                <div className="pt-4">
                   <button
                     type="submit"
-                    className="group inline-flex items-center gap-3 px-7 py-4 bg-[#F4F1EB] text-[#111111] hover:bg-white transition-all text-xs font-mono uppercase tracking-widest cursor-pointer shadow-lg"
+                    className="group inline-flex items-center gap-3 px-8 py-4 bg-[#F4F1EB] text-[#111111] hover:bg-white transition-all text-xs font-mono uppercase tracking-widest cursor-pointer shadow-lg"
                   >
-                    <span>SEND VIA EMAIL (GMAIL)</span>
+                    <span>SEND MESSAGE</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#C96B5A]" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleSendWhatsApp}
-                    className="inline-flex items-center gap-2.5 px-6 py-4 bg-[#121212] hover:bg-[#1A1A1A] border border-[#2A2A2A] hover:border-[#25D366] text-xs font-mono uppercase tracking-widest text-[#F4F1EB] hover:text-[#25D366] transition-all cursor-pointer"
-                  >
-                    <MessageSquare className="w-4 h-4 text-[#25D366]" />
-                    <span>SEND VIA WHATSAPP</span>
                   </button>
                 </div>
               </form>
